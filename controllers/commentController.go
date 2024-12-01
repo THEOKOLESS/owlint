@@ -30,40 +30,14 @@ func AddComment(c *gin.Context) {
 		return
 	}
 
+	// Determine the source language and translate here
+
 	if comment.AuthorID == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "authorId is required"})
 		return
 	}
-	// Déterminer la langue source et traduire
-	// var sourceLang, targetLang, originalText string
-	// if comment.TextFr != "" {
-	// 	sourceLang = "FR"
-	// 	targetLang = "EN"
-	// 	originalText = comment.TextFr
-	// } else {
-	// 	sourceLang = "EN"
-	// 	targetLang = "FR"
-	// 	originalText = comment.TextEn
-	// }
-
-	// Traduire le texte
-	// translatedText, err := utils.TranslateText(sourceLang, targetLang, originalText)
-	// if err != nil {
-	// 	// Gérer l'erreur de traduction (par exemple, continuer avec le texte original)
-	// 	c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la traduction"})
-	// 	return
-	// }
-
-	// Affecter le texte traduit au champ approprié
-	// if sourceLang == "FR" {
-	// 	comment.TextEn = translatedText
-	// } else {
-	// 	comment.TextFr = translatedText
-	// }
 
 	if comment.PublishedAt == "" {
-
-		// comment.PublishedAt = strconv.FormatInt(time.Now().Unix(), 10)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "PublishedAt is required"})
 		return
 	}

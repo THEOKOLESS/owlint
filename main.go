@@ -1,4 +1,3 @@
-// main.go
 package main
 
 import (
@@ -17,6 +16,6 @@ func main() {
 	routes.RegisterRoutes(router)
 
 	if err := router.Run(":8080"); err != nil {
-		log.Fatal("Erreur lors du démarrage du serveur :", err)
+		log.Fatal("error while starting server:", err)
 	}
 }
