@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  title: Owlint Technical Test API
+  version: "1.1.0"
+  description: |
+    We need two endpoints:
+
+    - The first adds a comment on a target.
+    - The second gets all the comments linked to a target.
+    
+    This specification documents the successful responses. Feel free to add any
+    error responses you deem necessary.
+  contact:
+    email: ambre@owlint.fr
+paths:
+  /target/{targetId}/comments:
+    get:
+      summary: List comments on target
+      operationId: targetComments
+      description: |
+        List all the comments on a target given its ID.
+        
+        The response may include all the nested replies if you chose to
+        implement comment threading.
+      parameters:
+        - in: path
+          name: targetId
+          description: Target ID
+          required: true
+          schema:
+            type: string
+            example: "Photo-345"
+      responses:
+        '200':
+          description: Comments on the target
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+                example:
+                  - id: 'Comment-123'
+                    targetId: 'Photo-345'
+                    authorId: 'User-234'
+                    publishedAt: '1639477064'
+                    textEn: 'Amazing work'
+                    textFr: ''
+                    replies:
+                      - id: 'Comment-567'
+                        targetId: 'Comment-123'
+                        authorId: 'User-678'
+                        publishedAt: '1639495847'
+                        textEn: ''
+                        textFr: 'Merci beaucoup !'
+                        replies: []
+                  - id: 'Comment-456'
+                    targetId: 'Photo-345'
+                    authorId: 'User-567'
+                    publishedAt: '1639484923'
+                    textEn: 'Great color balance'
+                    textFr: ''
+                    replies: []
+    post:
+      summary: Add comment on target
+      operationId: addComment
+      description: |
+        Add a comment on a target given its ID.
+        
+        Clients must provide the text either in French or in English.
+      parameters:
+        - in: path
+          name: targetId
+          description: Target ID
+          required: true
+          schema:
+            type: string
+            example: "Photo-345"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - authorId
+                - publishedAt
+                - textFr
+                - textEn
+              properties:
+                authorId:
+                  type: string
+                  example: 'User-234'
+                publishedAt:
+                  type: string
+                  format: timestamp
+                  example: '1639477064'
+                textEn:
+                  type: string
+                  example: 'Amazing work!'
+                textFr:
+                  type: string
+                  example: ''
+      responses:
+        '201':
+          description: Comment created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+components:
+  schemas:
+    Comment:
+      type: object
+      required:
+        - id
+        - textFr
+        - textEn
+        - publishedAt
+        - authorId
+        - targetId
+        - replies
+      properties:
+        id:
+          type: string
+          example: 'Comment-123'
+        targetId:
+          type: string
+          example: 'Photo-345'
+        authorId:
+          type: string
+          example: 'User-234'
+        publishedAt:
+          type: string
+          format: timestamp
+          example: '1639477064'
+        textEn:
+          type: string
+          example: 'Amazing work!'
+        textFr:
+          type: string
+          example: ''
+        replies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comment'
+          example: []

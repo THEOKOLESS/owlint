@@ -1,0 +1,9 @@
+Lors de la réception d'un nouveau commentaire via l'API, déterminer la langue du commentaire en vérifiant si le commentaire est en français ou en anglais grace a textFr et textEn.
+
+Utiliser une API de Google Translate ou DeepL.
+
+    - Obtenir une clé API 
+
+    - Appeler l'API de traduction
+
+    - Recevoir le texte traduit en réponse.
